@@ -1,0 +1,20 @@
+cat > .gitignore << 'EOF'
+# Virtuell miljö
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Miljövariabler / hemligheter
+.env
+
+# Data / output
+*.csv
+*.pkl
+
+# IDE
+.vscode/
+.idea/
+EOF
