@@ -33,6 +33,8 @@ def fetch_weather(city):
 
     Returnerar en dict med minst:
         - city
+        - lat
+        - lon
         - temperature
         - humidity
         - timestamp
@@ -53,6 +55,8 @@ def fetch_weather(city):
         data = response.json()
         weather_data = {
             "city": city,
+            "lat": data["coord"]["lat"],
+            "lon": data["coord"]["lon"],
             "temperature": data["main"]["temp"],
             "humidity": data["main"]["humidity"],
             "timestamp": datetime.now().isoformat()
@@ -61,8 +65,6 @@ def fetch_weather(city):
     else:
         print(f"Fel vid hämtning av väder för {city}: statuskod {response.status_code}")
         return None
-
-    pass
 
 
 def build_producer():
