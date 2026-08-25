@@ -12,9 +12,9 @@ maskininlärning (feat/ml-prediction).
 Del av kursmikroprojektet "Data streams" (Apache Kafka).
 """
 
-import os
 import csv
 import json
+import os
 
 from kafka import KafkaConsumer
 
@@ -46,8 +46,8 @@ def write_to_csv(weather_data, file_path=CSV_FILE_PATH):
             writer.writeheader()
 
         writer.writerow(weather_data)
-        
-        
+
+
 def build_consumer():
     """
     Skapar och returnerar en KafkaConsumer kopplad till localhost:9092,

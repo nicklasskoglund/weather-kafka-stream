@@ -12,17 +12,16 @@ av andra grupper. Detta gör att batch- och realtidskonsumenten kan köras
 samtidigt utan att konkurrera om samma meddelanden.
 """
 
-from datetime import datetime
-import matplotlib.dates as mdates
 import json
-import matplotlib.pyplot as plt
-
-from matplotlib.animation import FuncAnimation
-from kafka import KafkaConsumer
-
 from collections import defaultdict, deque
+from datetime import datetime
 
-from src.temperature_predictor import train_models, predict_next_temperature, log_prediction
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+from kafka import KafkaConsumer
+from matplotlib.animation import FuncAnimation
+
+from src.temperature_predictor import log_prediction, predict_next_temperature, train_models
 
 # Kafka-inställningar
 BOOTSTRAP_SERVERS = "localhost:9092"
@@ -71,8 +70,8 @@ def make_history_store():
         "temperature": deque(maxlen=HISTORY_LENGTH),
         "humidity": deque(maxlen=HISTORY_LENGTH),
     })
-    
-    
+
+
 def setup_figure(cities):
     """
     Skapar matplotlib-figuren med två subplots (temperatur och

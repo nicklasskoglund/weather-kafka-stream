@@ -11,9 +11,9 @@ realtidsvisualisering).
 Del av kursmikroprojektet "Data streams" (Apache Kafka).
 """
 
+import json
 import os
 import time
-import json
 from datetime import datetime
 
 import requests
