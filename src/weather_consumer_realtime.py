@@ -22,6 +22,8 @@ from kafka import KafkaConsumer
 
 from collections import defaultdict, deque
 
+from src.temperature_predictor import train_models, predict_next_temperature, log_prediction
+
 # Kafka-inställningar
 BOOTSTRAP_SERVERS = "localhost:9092"
 TOPIC_NAME = "weather-data"
@@ -168,6 +170,22 @@ def main():
     consumer = build_consumer()
     history = make_history_store()
     fig, axes, lines = setup_figure(cities)
+
+    # Engångsträning av prediktionsmodeller utifrån historisk CSV-data.
+    # Körs en gång vid uppstart, inte per inkommande meddelande (se
+    # temperature_predictor.py för resonemang kring detta val).
+    trained_models = train_models()
+    print("\n--- Temperaturprediktioner (baserat på historik vid uppstart) ---")
+    for city in cities:
+        prediction = predict_next_temperature(trained_models, city)
+        if prediction is None:
+            print(f"{city}: ingen prediktion tillgänglig (för lite historik).")
+            continue
+        lat = trained_models[city]["lat"]
+        lon = trained_models[city]["lon"]
+        print(f"{city}: predikterad nästa temperatur = {prediction:.2f}°C")
+        log_prediction(city, lat, lon, prediction)
+    print("---\n")
 
     # interval=1000 (ms) styr hur ofta update_plot anropas, oavsett hur
     # ofta nya Kafka-meddelanden faktiskt kommer in. cache_frame_data=False
